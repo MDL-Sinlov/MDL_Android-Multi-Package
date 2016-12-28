@@ -111,8 +111,9 @@ public class ChannelContent {
     }
 
     public Map<String, String> getChanelInfo(String... key) {
-        if (properties == null || properties.isEmpty()) {
+        if (!hasChannelFile || properties == null || properties.isEmpty()) {
             new ExceptionInInitializerError("has your initChannelContent() ?").printStackTrace();
+            return null;
         }
         HashMap<String, String> hashMap = new HashMap<String, String>();
         for (String s : key) {

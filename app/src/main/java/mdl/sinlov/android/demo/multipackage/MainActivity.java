@@ -59,16 +59,20 @@ public class MainActivity extends MDLTestActivity {
                 break;
             case R.id.btn_main_get_channel_properties:
                 Map<String, String> fullInfo = ChannelContent.getInstance().getChanelInfo("channel");
-                StringBuffer sb = new StringBuffer();
-                sb.append("Channel info\n");
-                for (Map.Entry info :
-                        fullInfo.entrySet()) {
-                    sb.append("Info key: ");
-                    sb.append(info.getKey());
-                    sb.append(" value: ");
-                    sb.append("\n");
+                if (null != fullInfo) {
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("Channel info\n");
+                    for (Map.Entry info :
+                            fullInfo.entrySet()) {
+                        sb.append("Info key: ");
+                        sb.append(info.getKey());
+                        sb.append(" value: ");
+                        sb.append("\n");
+                    }
+                    tvResult.setText(sb.toString());
+                } else {
+                    tvResult.setText("get channel properties empty do you want check?");
                 }
-                tvResult.setText(sb.toString());
                 break;
         }
     }
