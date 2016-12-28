@@ -1,0 +1,61 @@
+import java.util.zip.ZipFile
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream;
+
+def META_INF_FILE_START = "META-INF/"
+
+def Channel_name = readChannel_Name()
+
+def MAPK_Output = readMAPK_Output()
+
+def readChannel_Name() {
+    return hasProperty('CHANNEL_NAME') ? COMM_NAME : "Def"
+}
+
+def readMAPK_Output() {
+    return hasProperty('MAPK_OUT_DIR') ? OBA_OUT_DIR : "build/multi-outApk"
+}
+
+task outMutilAPKRelease(type: Copy) {
+    from('build/outputs/apk/')
+    exclude "build/outputs/apk/${project.name}-debug-unsigned.apk"
+    into(MAPK_Output)
+    include("${project.name}-debug.apk")
+    def catch_apk = Channel_name + "-${android.defaultConfig.applicationId}-debug-${android.defaultConfig.versionName}-" + readTimeStr() + ".apk"
+    rename("${project.name}-debug.apk", catch_apk)
+    def new_apk = Channel_name + "-${android.defaultConfig.applicationId}-multi-debug-${android.defaultConfig.versionName}-" + readTimeStr() + ".apk"
+    addMutliPackageFile((MAPK_Output + "/" + catch_apk), (MAPK_Output + "/" + new_apk))
+}
+
+def addMutliPackageFile(final path, final newPath) {
+    def resFile = new File(path)
+    if (!resFile.exists()) {
+        println "apk File is not exist please check" + path
+        return false
+    }
+    ZipFile zipFile = new ZipFile(path);
+    Enumeration<?> entries = zipFile.entries();
+    while (entries.hasMoreElements()) {
+        ZipEntry entry = (ZipEntry) entries.nextElement();
+        def entryName = entry.getName();
+        if (entryName.contains("../")) {
+            break;
+        }
+        if (entryName.startsWith(META_INF_FILE_START)) {
+            println "find META-INF folder: " + entryName
+        }
+    }
+    ZipOutputStream append = new ZipOutputStream(new FileOutputStream(newPath));
+    ZipEntry newInfoFile = new ZipEntry(META_INF_FILE_START + "pl_channel_" + Channel_name);
+    println "append file path: " + newInfoFile.getName()
+    append.putNextEntry(newInfoFile)
+    def channel_info = "channel = " + Channel_name
+    append.write(channel_info.getBytes());
+    zipFile.close()
+    append.closeEntry()
+    append.close()
+}
+
+def readTimeStr() {
+    return new Date().format('yyyy-MM-dd-HH-mm');
+}
