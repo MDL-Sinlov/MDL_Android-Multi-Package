@@ -1,16 +1,16 @@
 [TOC]
 
-# Android temp
+# Android multipackage
 
 Android ALog provides :
 - ~~Full method count 00~~
 
 Less Runtime :
-- minSdkVersion 4
+- minSdkVersion 9
 - gradle or maven
 - jar [You can Download just like this Path]((https://github.com/MDL-Sinlov/MDL-Android-Repo/raw/master/mvn-repo/mdl/sinlov/android/))
 
-> eclipse just use every repo at version `temp-x.x.x-jarLib.jar`
+> eclipse just use every repo at version `multipackage-x.x.x-jarLib.jar`
 
 Project Runtime:
 - Android Studio 2.2
@@ -42,13 +42,47 @@ in module `build.gradle`
 
 ```gradle
 dependencies {
-    compile 'mdl.sinlov.android:temp:0.0.1'
+    compile 'mdl.sinlov.android:multipackage:0.0.1'
 }
 ```
 
 # Usage
 
+- init
 
+```java
+boolean isSuccess = ChannelContent.getInstance().initChannelContent(this.getApplicationContext());
+```
+
+- getChannel name
+
+```java
+String channel_name = ChannelContent.getInstance().getChannel_name();
+```
+
+- getChannel properties
+
+```java
+Map<String, String> fullInfo = ChannelContent.getInstance().getChanelInfo("channel");
+```
+
+# Principle
+
+apk will not check `META-INF` at package
+
+you can new file at path `./META-INF`
+
+like `pl_channel_` + `channel_name`
+
+> Inner file format is properties!
+
+Android API will read this file
+
+default properties is
+
+|key|value|
+|---|-----|
+|channel|channel_name|
 
 ###License
 
