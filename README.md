@@ -2,7 +2,7 @@
 
 # Android multipackage
 
-Android ALog provides :
+Android provides :
 - ~~Full method count 00~~
 
 Less Runtime :
