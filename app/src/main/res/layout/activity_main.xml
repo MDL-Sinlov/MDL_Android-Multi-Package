@@ -45,9 +45,14 @@
             android:text="check Get Channel name" />
 
         <Button
-            android:id="@+id/btn_main_get_channel_properties"
+            android:id="@+id/btn_main_get_channel_more_info_by_key"
             style="@style/Sinlov.Button.Menu.MW"
-            android:text="check Get Channel more info" />
+            android:text="check Get Channel info key channel" />
+
+        <Button
+            android:id="@+id/btn_main_get_channel_more_info_list"
+            style="@style/Sinlov.Button.Menu.MW"
+            android:text="check Get Channel info list" />
     </LinearLayout>
 
 </ScrollView>

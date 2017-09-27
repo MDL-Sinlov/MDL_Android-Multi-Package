@@ -110,10 +110,28 @@ public class ChannelContent {
         return channel_name;
     }
 
-    public Map<String, String> getChanelInfo(String... key) {
-        if (!hasChannelFile || properties == null || properties.isEmpty()) {
+    public Properties getProperties() {
+        if (!hasChannelFile || properties == null) {
             new ExceptionInInitializerError("has your initChannelContent() ?").printStackTrace();
             return null;
+        } else {
+            if (properties.isEmpty()) {
+                new Exception("properties load is empty").printStackTrace();
+                return null;
+            }
+        }
+        return properties;
+    }
+
+    public Map<String, String> getChanelInfo(String... key) {
+        if (!hasChannelFile || properties == null) {
+            new ExceptionInInitializerError("has your initChannelContent() ?").printStackTrace();
+            return null;
+        } else {
+            if (properties.isEmpty()) {
+                new Exception("properties load is empty").printStackTrace();
+                return null;
+            }
         }
         HashMap<String, String> hashMap = new HashMap<String, String>();
         for (String s : key) {

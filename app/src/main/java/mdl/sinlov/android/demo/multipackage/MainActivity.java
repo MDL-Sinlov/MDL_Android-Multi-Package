@@ -7,6 +7,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.Map;
+import java.util.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,10 +22,14 @@ public class MainActivity extends MDLTestActivity {
     Button btnMainCheckInit;
     @BindView(R.id.btn_main_get_channel_name)
     Button btnMainGetChannelName;
-    @BindView(R.id.btn_main_get_channel_properties)
+    @BindView(R.id.btn_main_get_channel_more_info_by_key)
     Button btnMainGetChannelProperties;
     @BindView(R.id.activity_main)
     ScrollView activityMain;
+    @BindView(R.id.btn_main_get_channel_more_info_list)
+    Button btnMainGetChannelMoreInfoList;
+    private boolean intiSuccess;
+    private StringBuffer sb = new StringBuffer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +49,55 @@ public class MainActivity extends MDLTestActivity {
     }
 
     @OnClick({R.id.tv_result, R.id.btn_main_check_init, R.id.btn_main_get_channel_name,
-            R.id.btn_main_get_channel_properties})
+            R.id.btn_main_get_channel_more_info_by_key, R.id.btn_main_get_channel_more_info_list})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_result:
                 break;
             case R.id.btn_main_check_init:
-                boolean isSuccess = ChannelContent.getInstance().initChannelContent(this.getApplicationContext());
-                tvResult.setText("Is Init successful: " + isSuccess);
+                intiSuccess = ChannelContent.getInstance().initChannelContent(this.getApplicationContext());
+                tvResult.setText(String.format("Is Init successful: %s", intiSuccess));
                 break;
             case R.id.btn_main_get_channel_name:
                 String channel_name = ChannelContent.getInstance().getChannel_name();
-                tvResult.setText("Get Channel Name: " + channel_name);
+                tvResult.setText(String.format("Get Channel Name: %s", channel_name));
                 break;
-            case R.id.btn_main_get_channel_properties:
+            case R.id.btn_main_get_channel_more_info_by_key:
                 Map<String, String> fullInfo = ChannelContent.getInstance().getChanelInfo("channel");
                 if (null != fullInfo) {
-                    StringBuffer sb = new StringBuffer();
+                    sb.setLength(0);
                     sb.append("Channel info\n");
                     for (Map.Entry info :
                             fullInfo.entrySet()) {
                         sb.append("Info key: ");
-                        sb.append(info.getKey());
                         sb.append(" value: ");
+                        sb.append(info.getValue());
                         sb.append("\n");
                     }
                     tvResult.setText(sb.toString());
+                } else {
+                    tvResult.setText("get channel properties empty do you want check?");
+                }
+                break;
+            case R.id.btn_main_get_channel_more_info_list:
+                if (intiSuccess) {
+                    Properties properties = ChannelContent.getInstance().getProperties();
+                    if (properties != null) {
+                        sb.setLength(0);
+                        sb.append("Channel info\n");
+                        String[] keys = {"channel", "more", "new"};
+                        for (String key : keys) {
+                            String channelVal = properties.getProperty(key, "");
+                            sb.append("Info key: ");
+                            sb.append(key);
+                            sb.append(" value: ");
+                            sb.append(channelVal);
+                            sb.append("\n");
+                        }
+                        tvResult.setText(sb.toString());
+                    } else {
+                        tvResult.setText("get channel properties null do you want check?");
+                    }
                 } else {
                     tvResult.setText("get channel properties empty do you want check?");
                 }
