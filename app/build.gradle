@@ -27,5 +27,3 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
     implementation project(':multipackage')
 }
-
-apply from: "multi_package.gradle"
