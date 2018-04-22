@@ -36,19 +36,9 @@ public class ChannelContent {
     private static final String META_INF_FILE_START = "META-INF/pl_channel_";
     private static final String CHANNEL_FILE_MARK = "pl_channel_";
     private String channel_name;
-    private static ChannelContent instance;
     private Properties properties;
     private boolean hasChannelFile = false;
 
-    public static ChannelContent getInstance() {
-        if (null == instance) {
-            instance = new ChannelContent();
-        }
-        return instance;
-    }
-
-    private ChannelContent() {
-    }
 
     public boolean initChannelContent(Context context) {
         hasChannelFile = false;
@@ -138,5 +128,16 @@ public class ChannelContent {
             hashMap.put(s, properties.getProperty(s, ""));
         }
         return hashMap;
+    }
+
+    public static ChannelContent getInstance() {
+        return Instance.instance;
+    }
+
+    private ChannelContent() {
+    }
+
+    private static class Instance {
+        private static final ChannelContent instance = new ChannelContent();
     }
 }
