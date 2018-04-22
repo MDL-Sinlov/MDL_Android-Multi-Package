@@ -24,6 +24,24 @@ Project Runtime:
 - version 0.0.1
 - repo at https://github.com/MDL-Sinlov/MDL-Android-Repo
 
+# Warning v1.x
+
+if use [﻿APK Signature Scheme v2](https://source.android.com/security/apksigning/v2.html)
+must return old way for sign
+
+```gradle
+android {
+    signingConfigs {
+        debug {
+            v2SigningEnabled false
+        }
+        release {
+            v2SigningEnabled false
+        }
+    }
+}
+```
+
 # Dependency
 
 at root project `build.gradle`

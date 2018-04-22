@@ -4,6 +4,21 @@ android {
     compileSdkVersion ANDROID_COMPILE_SDK_VERSION as int
     //    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
+    signingConfigs {
+        keyBuild {
+            storeFile file(project.hasProperty('KEY_BUILD_STOREFILE') ? KEY_1_STOREFILE : '../z-keystore/debug.keystore')
+            storePassword project.hasProperty('KEY_BUILD_STOREPASS') ? KEY_1_STOREPASS : 'android'
+            keyAlias project.hasProperty('KEY_BUILD_KEYALIAS') ? KEY_1_KEYALIAS : 'android'
+            keyPassword project.hasProperty('KEY_BUILD_KEYPASS') ? KEY_1_KEYPASS : 'android'
+        }
+        debug {
+            v2SigningEnabled false
+        }
+        release {
+            v2SigningEnabled false
+        }
+    }
+
     defaultConfig {
         applicationId "mdl.sinlov.android.demo.multipackage"
         minSdkVersion 15
@@ -12,9 +27,15 @@ android {
         versionName VERSION_NAME
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.keyBuild
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.keyBuild
         }
     }
 }
