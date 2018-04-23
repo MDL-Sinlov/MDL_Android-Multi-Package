@@ -66,14 +66,6 @@ public class ChannelContent {
                         BufferedReader br = new BufferedReader(new InputStreamReader(zipfile.getInputStream(entry)));
                         properties = new Properties();
                         properties.load(br);
-
-//                        String line;
-//                        int lines = 0;
-//                        while ((line = br.readLine()) != null) {
-//                            lines++;
-//                            sb.append(line.trim());
-//                        }
-
                         br.close();
                     }
                     break;

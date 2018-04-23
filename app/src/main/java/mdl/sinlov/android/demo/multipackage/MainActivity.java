@@ -85,13 +85,13 @@ public class MainActivity extends MDLTestActivity {
                     if (properties != null) {
                         sb.setLength(0);
                         sb.append("Channel info\n");
-                        String[] keys = {"channel", "more", "new"};
-                        for (String key : keys) {
-                            String channelVal = properties.getProperty(key, "");
+                        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+                            Object key = entry.getKey();
+                            Object value = entry.getValue();
                             sb.append("Info key: ");
                             sb.append(key);
                             sb.append(" value: ");
-                            sb.append(channelVal);
+                            sb.append(value);
                             sb.append("\n");
                         }
                         tvResult.setText(sb.toString());
